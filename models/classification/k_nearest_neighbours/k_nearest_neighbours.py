@@ -46,18 +46,26 @@ predictions_int = k_nearest_neighbors_model.predict(X=input_data_test)
 predictions_str = label_encoder.inverse_transform(predictions_int)
 expected_prediction_str = label_encoder.inverse_transform(output_data_test)
 prediction_range = abs(max(output_data_train) - min(output_data_train))
-test_model_df = pd.DataFrame([
-    {
-        "input_test_data": input_data_test.iloc[index].values,
-        "expected_prediction": expected_prediction_str[index],
-        "actual_prediction": predictions_str[index],
-        "accuracy": int(
-            (prediction_range - abs(output_data_test.iloc[index] - predictions_int[index])) / prediction_range * 100)
-    }
-    for index in range(len(predictions_int))
-])
-test_model_df['accuracy'] = test_model_df['accuracy'].apply(helpers.df_cell_red_color)
-pd.set_option('display.max_rows', 500)
-pd.set_option('display.max_columns', 500)
-pd.set_option('display.width', 1000)
+test_model_df = pd.DataFrame(
+    [
+        {
+            "input_test_data": input_data_test.iloc[index].values,
+            "expected_prediction": expected_prediction_str[index],
+            "actual_prediction": predictions_str[index],
+            "accuracy": int(
+                (
+                    prediction_range
+                    - abs(output_data_test.iloc[index] - predictions_int[index])
+                )
+                / prediction_range
+                * 100
+            ),
+        }
+        for index in range(len(predictions_int))
+    ]
+)
+test_model_df["accuracy"] = test_model_df["accuracy"].apply(helpers.df_cell_red_color)
+pd.set_option("display.max_rows", 500)
+pd.set_option("display.max_columns", 500)
+pd.set_option("display.width", 1000)
 print(test_model_df)
