@@ -19,7 +19,9 @@ students_data_path = helpers.get_path_in_repo("data", "student-mat.csv")
 full_data = pd.read_csv(students_data_path, sep=";")
 
 # split data into what we're going to feed to the model, and what it must predict
-input_data = full_data[["G1", "G2", "studytime", "failures", "absences"]]  # the model will take data from a few columns
+input_data = full_data[
+    ["G1", "G2", "studytime", "failures", "absences"]
+]  # the model will take data from a few columns
 output_data = full_data[[predict]]  # the model will predict G3 value
 
 # split  x and y: 0.1 to test data, 0.9 to learning data
@@ -67,11 +69,15 @@ if new_model_created:
         pickle.dump(linear_regression_model, f)
 
 # test the model
-linear_model_accuracy = linear_regression_model.score(X=input_data_test, y=output_data_test)
+linear_model_accuracy = linear_regression_model.score(
+    X=input_data_test, y=output_data_test
+)
 print(f"Model accuracy: {linear_model_accuracy}")
 
 # output the model coefficients
-data_importance_coefficients = pd.DataFrame(linear_regression_model.coef_, columns=input_data.columns)
+data_importance_coefficients = pd.DataFrame(
+    linear_regression_model.coef_, columns=input_data.columns
+)
 print(f"Importance coefficients of the input data:")
 print(data_importance_coefficients)
 
@@ -80,21 +86,31 @@ print(f"Intercept: {linear_regression_model.intercept_}")
 
 # visualize predictions along with train and test data
 predictions: np.ndarray = linear_regression_model.predict(input_data_test)
-prediction_range = abs(max(output_data_train[predict]) - min(output_data_train[predict]))
-test_model_df = pd.DataFrame([
-    {
-        "input_test_data": input_data_test.iloc[index].values,
-        "expected_prediction": output_data_test.iloc[index].iloc[0],
-        "actual_prediction": predictions[index][0],
-        "accuracy": int((prediction_range - abs(
-            output_data_test.iloc[index].iloc[0] - predictions[index][0])) / prediction_range * 100)
-    }
-    for index in range(len(predictions))
-])
-test_model_df['accuracy'] = test_model_df['accuracy'].apply(helpers.df_cell_red_color)
-pd.set_option('display.max_rows', 500)
-pd.set_option('display.max_columns', 500)
-pd.set_option('display.width', 1000)
+prediction_range = abs(
+    max(output_data_train[predict]) - min(output_data_train[predict])
+)
+test_model_df = pd.DataFrame(
+    [
+        {
+            "input_test_data": input_data_test.iloc[index].values,
+            "expected_prediction": output_data_test.iloc[index].iloc[0],
+            "actual_prediction": predictions[index][0],
+            "accuracy": int(
+                (
+                    prediction_range
+                    - abs(output_data_test.iloc[index].iloc[0] - predictions[index][0])
+                )
+                / prediction_range
+                * 100
+            ),
+        }
+        for index in range(len(predictions))
+    ]
+)
+test_model_df["accuracy"] = test_model_df["accuracy"].apply(helpers.df_cell_red_color)
+pd.set_option("display.max_rows", 500)
+pd.set_option("display.max_columns", 500)
+pd.set_option("display.width", 1000)
 print(test_model_df)
 
 # plot the correlation between initial data and G3
@@ -112,7 +128,9 @@ for row in axes:
             x_axis = input_data.columns[i]
             y_axis = output_data.columns[0]
             ax.scatter(x=input_data[x_axis], y=output_data[y_axis])
-            ax.set_title(f'Correlation between "{x_axis}" and "{y_axis}" in the initial data')
+            ax.set_title(
+                f'Correlation between "{x_axis}" and "{y_axis}" in the initial data'
+            )
             ax.set_xlabel(f"{x_axis}: {linear_regression_model.coef_[0][i]}")
             ax.set_ylabel(y_axis)
             ax.axvline(0, color="black", linewidth=0.5)
