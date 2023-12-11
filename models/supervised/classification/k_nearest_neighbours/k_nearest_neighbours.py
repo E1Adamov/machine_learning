@@ -1,11 +1,5 @@
-import math
-import os.path
-import pickle
-
-import numpy as np
 import pandas as pd
 from sklearn import model_selection, neighbors, preprocessing
-from matplotlib import pyplot as plt
 
 from helpers import helpers
 
