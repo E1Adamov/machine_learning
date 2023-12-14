@@ -1,7 +1,7 @@
 import pandas as pd
 from sklearn import model_selection, neighbors, preprocessing
 
-from helpers import helpers
+from helpers import helper
 
 new_model_created = False
 
@@ -9,10 +9,10 @@ new_model_created = False
 predict = "class"
 
 # read the data from csv
-students_data_path = helpers.get_path_in_repo("data", "car.data")
+students_data_path = helper.get_path_in_repo("data", "car.data")
 initial_data = pd.read_csv(students_data_path)
 
-# since the initial data is cathegorical (contains text values), we need to transform them
+# since the initial data contains text values, we need to transform them
 label_encoder = preprocessing.LabelEncoder()
 for column_name in initial_data.columns:
     initial_column_data = initial_data[column_name]
@@ -58,7 +58,7 @@ test_model_df = pd.DataFrame(
         for index in range(len(predictions_int))
     ]
 )
-test_model_df["accuracy"] = test_model_df["accuracy"].apply(helpers.df_cell_red_color)
+test_model_df["accuracy"] = test_model_df["accuracy"].apply(helper.num_to_str_red_color)
 pd.set_option("display.max_rows", 500)
 pd.set_option("display.max_columns", 500)
 pd.set_option("display.width", 1000)

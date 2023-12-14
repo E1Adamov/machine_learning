@@ -7,7 +7,7 @@ import pandas as pd
 from sklearn import model_selection, linear_model
 from matplotlib import pyplot as plt
 
-from helpers import helpers
+from helpers import helper
 
 new_model_created = False
 
@@ -15,7 +15,7 @@ new_model_created = False
 predict = "G3"
 
 # read the data from csv
-students_data_path = helpers.get_path_in_repo("data", "student-mat.csv")
+students_data_path = helper.get_path_in_repo("data", "student-mat.csv")
 full_data = pd.read_csv(students_data_path, sep=";")
 
 # split data into what we're going to feed to the model, and what it must predict
@@ -107,7 +107,7 @@ test_model_df = pd.DataFrame(
         for index in range(len(predictions))
     ]
 )
-test_model_df["accuracy"] = test_model_df["accuracy"].apply(helpers.df_cell_red_color)
+test_model_df["accuracy"] = test_model_df["accuracy"].apply(helper.num_to_str_red_color)
 pd.set_option("display.max_rows", 500)
 pd.set_option("display.max_columns", 500)
 pd.set_option("display.width", 1000)
