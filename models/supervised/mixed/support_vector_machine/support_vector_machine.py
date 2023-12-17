@@ -1,7 +1,7 @@
 import pandas as pd
 from sklearn import datasets, model_selection, svm
 
-from helpers import helpers
+from helpers import helper
 
 cancer_dataset = datasets.load_breast_cancer()
 # print(cancer_dataset.feature_names)
@@ -35,7 +35,7 @@ accuracy_df = pd.DataFrame(
         ],
     }
 )
-accuracy_df["accuracy"] = accuracy_df["accuracy"].apply(helpers.df_cell_red_color)
+accuracy_df["accuracy"] = accuracy_df["accuracy"].apply(helper.num_to_str_red_color)
 pd.set_option("display.max_rows", 500)
 print(accuracy_df)
 print(
