@@ -1,6 +1,10 @@
 import os
+import string
+from typing import Literal
 
+import nltk
 import requests
+import numpy as np
 
 from helpers.protocols import HasLtMethod
 from root import ROOT_PATH
@@ -24,3 +28,18 @@ def download_large_file(url, save_path, chunk_size=8192):
             for chunk in response.iter_content(chunk_size=chunk_size):
                 if chunk:
                     file.write(chunk)
+
+
+def bag_of_words(sentence: str, vocabulary: list[str]) -> list[int]:
+    """
+
+    :param sentence: arbitrary text
+    :param vocabulary: known words
+    :return: numpy array of 0s and 1s, where 0 or 1 means whether the word from <vocabulary> at the same index as
+    0 or 1 is present in the <sentence>
+    """
+    pattern = nltk.word_tokenize(sentence)
+    stemmer = nltk.stem.lancaster.LancasterStemmer()
+    pattern = [stemmer.stem(w.lower()) for w in pattern if w not in string.punctuation]
+    bag = [1 if word in pattern else 0 for word in vocabulary]
+    return bag

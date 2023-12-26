@@ -5,3 +5,5 @@ pandas
 numpy
 matplotlib
 black
+nltk
+requests

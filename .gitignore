@@ -235,5 +235,6 @@ fabric.properties
 *.pickle
 *.pkl
 
-# keras models
+# models
 *.h5
+*.keras

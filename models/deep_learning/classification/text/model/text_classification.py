@@ -68,7 +68,7 @@ if os.path.isfile(model_path):
     model = keras.models.load_model(model_path)
 else:
     model = keras.Sequential(
-        [
+        layers=[
             keras.layers.Embedding(
                 input_dim=max(inverted_word_index)
                 + 1,  # number of neurons = number of words in the vocabulary
