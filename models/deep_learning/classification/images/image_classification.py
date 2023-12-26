@@ -53,21 +53,21 @@ if os.path.isfile(model_path):
         model = pickle.load(f)
 else:
     model = keras.Sequential(
-        [
+        layers=[
             keras.layers.Flatten(input_shape=(28, 28)),
             # Dense: each neuron or node in the layer is connected to every neuron in the previous layer
             # activation Rectified Linear Unit: ReLU(x) = max(0, x), Output Range: [0, +∞]
             keras.layers.Dense(units=128, activation="relu"),
             # activation Softmax: Output Range: [0, 1] (normalized probability distribution over multiple classes)
             keras.layers.Dense(
-                units=10, activation="softmax"
+                units=len(class_names), activation="softmax"
             ),  # used for multi-class classification
         ]
     )
 
     model.compile(
         optimizer="adam",  # Adaptive Moment Estimation
-        loss="sparse_softmax_cross_entropy",  # used for multi-class classification where the target values are ints
+        loss="sparse_categorical_crossentropy",  # used for multi-class classification where the target values are ints
         metrics=["accuracy"],  # measures the percentage of correctly classified samples
     )
 
