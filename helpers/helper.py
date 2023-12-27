@@ -1,10 +1,10 @@
 import os
 import string
-from typing import Literal
 
 import nltk
-import requests
 import numpy as np
+import requests
+from tensorflow import keras  # noqa
 
 from helpers.protocols import HasLtMethod
 from root import ROOT_PATH
@@ -30,16 +30,24 @@ def download_large_file(url, save_path, chunk_size=8192):
                     file.write(chunk)
 
 
-def bag_of_words(sentence: str, vocabulary: list[str]) -> list[int]:
+def bag_of_words(
+    sentence: str, vocabulary: list[str], max_length: int
+) -> np.ndarray[np.ndarray[int]]:
     """
 
     :param sentence: arbitrary text
     :param vocabulary: known words
-    :return: numpy array of 0s and 1s, where 0 or 1 means whether the word from <vocabulary> at the same index as
-    0 or 1 is present in the <sentence>
+    :param max_length: limit or pad each bag length to this value
+    :return: list of 0-padded to <max_length> ints from the <vocabulary>, that represent words in the <sentence>
     """
     pattern = nltk.word_tokenize(sentence)
     stemmer = nltk.stem.lancaster.LancasterStemmer()
     pattern = [stemmer.stem(w.lower()) for w in pattern if w not in string.punctuation]
-    bag = [1 if word in pattern else 0 for word in vocabulary]
+    bag = [vocabulary[w] for w in pattern]
+    bag = keras.preprocessing.sequence.pad_sequences(
+        [bag],
+        value=0,
+        padding="post",
+        maxlen=max_length,
+    )
     return bag
